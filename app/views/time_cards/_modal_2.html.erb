@@ -1,9 +1,9 @@
 <!--残業申請モーダル-->
-<div class="modal fade" id="overwork_aut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="overwork_aut" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
         </br>
         <%= form_tag authenticate_time_card_path do %>
             <% (2..User.all.count - 1).each do |id| %>
@@ -15,14 +15,14 @@
                 <thead>
                   <tr style="font-weight: bold;">
                     <td>日付</td>
-                    <td>曜日</td>
-                    <td>終了予定時間</td>
-                    <td>指定勤務終了時間</td>
-                    <td>時間外時間</td>
+                    <td style="width: 6%;">曜日</td>
+                    <td style="width: 15%;">終了予定時間</td>
+                    <td style="width: 15%;">指定勤務終了時間</td>
+                    <td style="width: 11%;">時間外時間</td>
                     <td>業務処理内容</td>
-                    <td>指示者確認</td>
-                    <td>変更</td>
-                    <td>勤怠を確認する</td>
+                    <td style="width: 13%;">指示者確認</td>
+                    <td style="width: 6%;">変更</td>
+                    <td style="width: 14%;">勤怠を確認する</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -32,8 +32,8 @@
                       <td><%= date_in_japanese(obj, :month_day) %></td>
                       <td><%= into_week(obj.year, obj.month, obj.day) %></td>
                       <td class="over_work_modal"><%= time_string(obj.over_work) %></td>
-                      <td><%= time_string(@time_info.sd_work_time) %></td>
-                      <td><%= over_work_times(obj.year, obj.month, obj.day, obj.over_work, @time_info.sd_work_time) %></td>
+                      <td><%= time_string(obj.user.designated_work_end_time) if obj.user.designated_work_end_time %></td>
+                      <td><%= over_work_times(obj.year, obj.month, obj.day, obj.over_work, obj.user.designated_work_end_time) %></td>
                       <td><%= obj.content %></td>
                       <td class="modal_option"><%= f.select :status, options_for_select(["なし","申請中","承認","否認"]), {}, class: 'form-control' %></td>
                       <td><%= check_box_tag("[#{id}][#{obj.year}][#{obj.month}][#{obj.day}][check]") %></td>

@@ -1,9 +1,9 @@
 <!--勤怠変更申請モーダル-->
-<div class="modal fade" id="change_aut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="change_aut" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
         </br>
         <%= form_tag authenticate_2_time_card_path do %>
             <% (2..User.all.count - 1).each do |id| %> 

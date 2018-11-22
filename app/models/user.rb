@@ -20,6 +20,13 @@ class User < ApplicationRecord
   
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  
+  def User.check_password_confirmation(password)
+    unless password 
+      validates :password, confirmation: true
+    end
+  end
+  
   # validates :password, length: {minimum: 6}, on: :update, allow_blank: true
 
   # 渡された文字列のハッシュ値を返す

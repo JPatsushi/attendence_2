@@ -395,7 +395,7 @@ header {
 
 /* 残業申請モーダル */
 .over_work_modal {
-  width: 20%;
+  width: 13%;
   select {
     display: inline-block;
     width: 67px;
@@ -432,10 +432,8 @@ header {
   height: 45px;
 }
 
-// .modal {
-// overflow-y: auto;
-// }
+/*モーダルシフトトラブル解決*/ 
+.modal-open .navbar-fixed-top {
+  padding-right: 17px;
 
-// .modal-open {
-// overflow: auto;
-// }
+}

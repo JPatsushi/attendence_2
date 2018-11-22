@@ -1,5 +1,6 @@
 class MonthlyAuthenticationsController < ApplicationController
   
+  #ユーザーが一ヶ月承認申請ボタンを押す後に実行
   def update
     
     today = Time.current
@@ -14,6 +15,7 @@ class MonthlyAuthenticationsController < ApplicationController
     redirect_to time_card_path(@user)
   end
   
+  #上長が一ヶ月承認申請を変更する時に実行
   def monthly_update
     @monthly_authentications = MonthlyAuthentication.where(certifier: current_user.id)
       @monthly_authentications.each do |obj|

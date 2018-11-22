@@ -66,6 +66,8 @@ class UsersController < ApplicationController
       end
     else
       @user = User.find(params[:id])
+      password = params[:password]
+      User.check_password_confirmation(password)
       if @user.update_attributes(user_params)
         flash[:success] = "プロフィールを更新しました"
         redirect_to @user

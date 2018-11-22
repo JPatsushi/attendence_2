@@ -26,7 +26,7 @@
         <tr>
             <th>所属 <%= @user.depart %></th>
             <th>氏名 <%= @user.name %></th>
-            <th>コード</th><th>5555</th>
+            <th>コード</th><th><%= @user.employee_number %></th>
             <th>出勤日数 <%= @time_cards_count %>日</th>
             <th>締め <%= @last_day.month %>/<%= @last_day.day %></th>
         </tr>

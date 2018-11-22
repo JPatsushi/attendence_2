@@ -53,8 +53,8 @@ class TimeCardsController < ApplicationController
     end
   end
   
+  #ユーザーが残業申請をする時に実行
   def up_overwork
-    #byebug
     @user = User.find_by(id: params[:id])
     condition = { user: @user, year: params[:year], month: params[:month], day: params[:day] }
     TimeCard.find_by(condition) ? @time_card = TimeCard.find_by(condition) : @time_card = TimeCard.new(condition)
@@ -76,6 +76,7 @@ class TimeCardsController < ApplicationController
     
   end
   
+  #上長が残業申請を変更する時に実行
   def authenticate
     @authenticated_time_cards = TimeCard.where(certifer: current_user.id)
       @authenticated_time_cards.each do |obj|
@@ -105,6 +106,7 @@ class TimeCardsController < ApplicationController
       redirect_to time_card_path(id: current_user.id)
   end
   
+  #上長が勤怠変更申請を変更する時に実行
   def authenticate_2
     @authenticated_time_cards = TimeCard.where(change_certifier: current_user.id)
       @authenticated_time_cards.each do |obj|
@@ -144,13 +146,14 @@ class TimeCardsController < ApplicationController
       redirect_to time_card_path(id: current_user.id)
   end
   
+  #出社退社ボタンを押す時に実行
   def updata
     @user = User.find(params[:id])
     @time_card = TimeCard.today(@user)
       if params[:in]
-        @time_card.in_at = Time.now
+        @time_card.in_at = Time.zone.now
       elsif params[:out]
-        @time_card.out_at = Time.now
+        @time_card.out_at = Time.zone.now
       end
       @time_card.save
       redirect_to time_card_path(@user)
@@ -185,9 +188,8 @@ class TimeCardsController < ApplicationController
     # end
   end
   
+  #ユーザーが勤怠編集を保存時に実行
   def update
-    #byebug
-    
     @user = User.find(params[:id])
     @year = session[:year]
     @month = session[:month]
@@ -232,7 +234,7 @@ class TimeCardsController < ApplicationController
   end
   
   
-  
+  #月毎遷移ボタン
   def add
     @user = User.find(params[:id])
     @year = session[:year]
@@ -245,6 +247,7 @@ class TimeCardsController < ApplicationController
     redirect_to time_card_path(@user)
   end
   
+  #月毎遷移ボタン
   def subtract
     @user = User.find(params[:id])
     @year = session[:year]
@@ -314,6 +317,7 @@ class TimeCardsController < ApplicationController
       
     end
     
+    #一ヶ月承認オブジェクト先作り
     def authentication_index(user,year,month)
       index = user.monthly_authentications.find_by(year: year, month: month) 
       if index

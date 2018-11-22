@@ -17,7 +17,7 @@
         <% @locations.each_with_index do |location, index| %>
         <tr>
           <td>
-            <button data-toggle="collapse" href="#collapse-location_2-<%="#{index + 1}"%>" style="width: 114px;" class="btn btn-primary">
+            <button data-toggle="collapse" href="#collapse-location_2-<%="#{index + 1}"%>" style="width: 114px;" class="btn btn-primary fix">
               修正
             </button>
           </td>
@@ -60,7 +60,7 @@
   <div class="panel panel-default">
     <div class="panel-heading" >
       <h4 class="panel-title">
-        <button data-toggle="collapse" href="#collapse-location" style="width: 114px;" class="btn btn-primary accordion">
+        <button data-toggle="collapse" href="#collapse-location" style="width: 114px;" class="btn btn-primary accordion fix">
                   拠点情報追加
         </button>
       </h4>
@@ -85,6 +85,16 @@
     </div>
   </div>
 </div>  
+
+<!--シフト対策-->
+<script>
+  $(function(){
+    $(".fix").click(function(){
+      $("body").css("overflow-y","scroll");
+    })
+  });
+</script>
+
 
 <style>
 /*  td[colspan="5"] {*/
