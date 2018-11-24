@@ -69,7 +69,7 @@ class TimeCardsController < ApplicationController
     @time_card.content = params[:content]
     @time_card.certifer = params[:superior]
     @superior = User.find(params[:superior])
-    @time_card.status = "#{@superior.name}に残業申請中"
+    @time_card.status = "#{@superior.name}に残業申請中" ##書き方を変更しないキャ
     @time_card.save
     
     redirect_to time_card_path(@user)

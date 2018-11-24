@@ -1,7 +1,8 @@
 <% provide(:title, @user.name) %>
 
+
 <%= render 'time_cards/show_parts/upper_table' %>
-<%= render 'time_cards/show_parts/upper_aut_buttons' %>
+<%= render 'time_cards/show_parts/upper_aut_buttons' if current_user.superior %>
 <%= render 'time_cards/show_parts/upper_att_buttons' %>
 
 <!--勤怠テーブル-->
@@ -55,6 +56,8 @@
         <% else%>
           <td></td>
         <% end %> 
+      <% else %>
+        <td></td>
       <% end %>
       <td><%= work_hours(@time_cards[index].work_hours) %></td>
       <td><%= @time_cards[index].remark %></td>
