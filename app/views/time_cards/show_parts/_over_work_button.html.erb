@@ -1,5 +1,13 @@
 <% if current_user == @user %>
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal_<%= index %>">残業申請</button>
+  <% if @time_cards[index] %>
+    <% if @time_cards[index].in_at %>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal_<%= index %>">残業申請</button>
+    <% else %>
+      <button type="button" class="btn btn-primary" disabled>残業申請</button>
+    <% end %>
+  <% else %>
+    <button type="button" class="btn btn-primary" disabled>残業申請</button>
+  <% end %>
 <% end %>
     <div class="modal fade" id="myModal_<%= index %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog modal-lg" role="document">

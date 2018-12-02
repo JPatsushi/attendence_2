@@ -39,7 +39,7 @@
   <tbody>
     <% each_date_in_month(@year, @month) do |date, index| %>
     <tr>
-      <td><%= render 'time_cards/show_parts/over_work_button', index: index, date: date %></td>
+      <td><%= render 'time_cards/show_parts/over_work_button', index: index, date: date, time_cards: @time_cards %></td>
       <td><%= date_in_japanese(date, :month_day) %></td>
       <td><%= day_of_the_week_in_japanese(date, :short) %></td>
     <% if @time_cards[index] %>

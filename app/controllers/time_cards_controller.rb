@@ -2,7 +2,7 @@ class TimeCardsController < ApplicationController
   before_action :logged_in_user
   before_action :correct_but_superior_user, only: [:show]
   before_action :admin_user, only: [:new, :create]
-  before_action :non_admin_user, only: [:show, :edit, :update]  
+  before_action :non_admin_user, only: [:show, :edit, :update] 
   
   def show
     @user = User.find(params[:id])
@@ -69,20 +69,8 @@ class TimeCardsController < ApplicationController
     @time_card.content = params[:content]
     @time_card.certifer = params[:superior]
     @superior = User.find(params[:superior])
-    @time_card.status = "#{@superior.name}に残業申請中" if @time_card.status == nil
     
-    if @time_card.status
-      if @time_card.status.include?("残業")
-        @time_card.status = "#{@superior.name}に残業申請中" 
-      end
-    end
-    
-    if @time_card.status
-      if @time_card.status.include?("勤怠")
-      status_1 = @time_card.status
-        @time_card.status = "#{@superior.name}に残業申請中" + " " + status_1
-      end
-    end
+    @time_card.status = user_status_describing(@time_card.status, @superior.name, "残業")
     
     @time_card.save
     
@@ -222,12 +210,12 @@ class TimeCardsController < ApplicationController
             time_card.tmp_out_at = Time.zone.local(@year, @month, out_day, params[:time_cards][s]["tmp_out_at(4i)"], params[:time_cards][s]["tmp_out_at(5i)"], 0)
             if !params[:time_cards][s]["tmp_in_at(4i)"].empty? && !params[:time_cards][s]["tmp_in_at(5i)"].empty?
               time_card.tmp_in_at = Time.zone.local(@year, @month, current_day, params[:time_cards][s]["tmp_in_at(4i)"], params[:time_cards][s]["tmp_in_at(5i)"], 0)
-              time_card.status = "#{superior.name}に勤怠変更申請中"
+              time_card.status = user_status_describing(time_card.status, superior.name, "勤怠変更")
               time_card.remark = params[:time_cards][s][:remark] if !params[:time_cards][s][:remark].empty?
               time_card.change_certifier = params[:time_cards][s][:change_certifier]
               time_card.save
             else
-              time_card.status = "#{superior.name}に勤怠変更申請中"
+              time_card.status = user_status_describing(time_card.status, superior.name, "勤怠変更")
               time_card.remark = params[:time_cards][s][:remark] if !params[:time_cards][s][:remark].empty?
               time_card.change_certifier = params[:time_cards][s][:change_certifier]
               time_card.save
@@ -235,7 +223,7 @@ class TimeCardsController < ApplicationController
           else
             if !params[:time_cards][s]["tmp_in_at(4i)"].empty? && !params[:time_cards][s]["tmp_in_at(5i)"].empty?
               time_card.tmp_in_at = Time.zone.local(@year, @month, current_day, params[:time_cards][s]["tmp_in_at(4i)"], params[:time_cards][s]["tmp_in_at(5i)"], 0)
-              time_card.status = "#{superior.name}に勤怠変更申請中"
+              time_card.status = user_status_describing(time_card.status, superior.name, "勤怠変更")
               time_card.remark = params[:time_cards][s][:remark] if !params[:time_cards][s][:remark].empty?
               time_card.change_certifier = params[:time_cards][s][:change_certifier]
               time_card.save
@@ -343,5 +331,31 @@ class TimeCardsController < ApplicationController
       end 
     end
     
-
+    #ユーザー申請時のステータス表現
+    def user_status_describing(status, superior_name, content)
+      if status == nil 
+        status = superior_name + "に" + content + "申請中"
+      elsif status.include?("残業") && status.include?("勤怠変更")
+        status_0 = status.split(" ")[0]
+        status_1 = status.split(" ")[1]
+        if content == "残業"
+          status = superior_name + "に" + content + "申請中" + " " + status_1
+        else
+          status = status_0 + " " + superior_name + "に" + content + "申請中"
+        end
+      elsif status.include?("残業")
+        if content == "残業"
+          status = superior_name + "に" + content + "申請中"
+        else
+          status = status + " " + superior_name + "に" + content + "申請中"
+        end
+      elsif status.include?("勤怠変更")
+        if content == "残業"
+          status = superior_name + "に" + content + "申請中" + " " + status
+        else
+          status = superior_name + "に" + content + "申請中"
+        end
+      end
+      status
+    end   
 end
