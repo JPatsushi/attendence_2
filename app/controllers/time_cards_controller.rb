@@ -21,6 +21,7 @@ class TimeCardsController < ApplicationController
     @day = Time.current.day
     @time_cards = monthly_time_cards(@user, @year, @month)
     @time_card = TimeCard.today(@user)
+    @time_card_prev = TimeCard.prev_day(@user)
     @first_day = Date.new(@year, @month, 1)
     @last_day = Date.new(@year, @month, 1).next_month.prev_day
     # @time_info = TimeInfo.all.last
@@ -29,7 +30,7 @@ class TimeCardsController < ApplicationController
     store(@year,@month)
     
     #上長へ承認するボタン
-    @superiors = User.where(superior: true)
+    @superiors = User.where(superior: true).where.not(id: @user)
     @superiors_list = superiors(@superiors)
     @monthly_authentication = authentication_index(@user, @year, @month)
     
@@ -119,7 +120,7 @@ class TimeCardsController < ApplicationController
                 status_0 = obj.status.split(" ")[0]
                 status_1 = obj.status.split(" ")[1]
                 status_1 = "勤怠変更" + params[obj.user.id.to_s][obj.year.to_s][obj.month.to_s][obj.day.to_s][:status] + "済"
-                obj.status = status_0 + " " + statis_1
+                obj.status = status_0 + " " + status_1
               elsif obj.status.include?("残業")
                 obj.status = obj.status + " " + "勤怠変更" + params[obj.user.id.to_s][obj.year.to_s][obj.month.to_s][obj.day.to_s][:status] + "済"
               else
@@ -151,14 +152,19 @@ class TimeCardsController < ApplicationController
   #出社退社ボタンを押す時に実行
   def updata
     @user = User.find(params[:id])
-    @time_card = TimeCard.today(@user)
-      if params[:in]
-        @time_card.in_at = Time.zone.now
-      elsif params[:out]
-        @time_card.out_at = Time.zone.now
-      end
-      @time_card.save
-      redirect_to time_card_path(@user)
+    if params[:yest]
+      @time_card = TimeCard.prev_day(@user)
+    else
+      @time_card = TimeCard.today(@user)
+    end
+    
+    if params[:in]
+      @time_card.in_at = Time.zone.now
+    elsif params[:out]
+      @time_card.out_at = Time.zone.now
+    end
+    @time_card.save
+    redirect_to time_card_path(@user)
   end
   
   def new
@@ -183,7 +189,7 @@ class TimeCardsController < ApplicationController
       @time_cards = monthly_time_cards(@user, @year, @month)
       
       #上長へ承認するボタン
-      @superiors = User.where(superior: true)
+      @superiors = User.where(superior: true).where.not(id: @user)
       @superiors_list = superiors(@superiors)
     # else
       
@@ -309,10 +315,11 @@ class TimeCardsController < ApplicationController
     end
     
     def superiors(superiors)
+      
       array = []
       superiors.each_with_index do |superior, index|
         array[index] = []
-        array[index] << superior.name << superior.id
+        array[index] << superior.name << superior.id 
       end
       
       array

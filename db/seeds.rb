@@ -47,8 +47,13 @@ User.create!(name:  "上長B",
               email: email,
               password:              password,
               password_confirmation: password,
+              depart:"フリーランス部",
+              basic_work_time: Time.zone.local(2018, 11, 20, 8, 0, 0),
+              designated_work_start_time: Time.zone.local(2018, 11, 20, 6, 30, 0),
+              designated_work_end_time: Time.zone.local(2018, 11, 20, 15, 30, 0),
               activated: true,
-              activated_at: Time.zone.now)
+              activated_at: Time.zone.now
+              )
 end
 
 # 一ヶ月勤怠申請

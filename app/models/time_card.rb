@@ -17,6 +17,12 @@ class TimeCard < ApplicationRecord
       condition = { user: user, year: date.year, month: date.month, day: date.day }
       TimeCard.find_by(condition) || self.new(condition)
     end
+    
+    def prev_day(user)
+      date = Time.current.prev_day
+      condition = { user: user, year: date.year, month: date.month, day: date.day }
+      TimeCard.find_by(condition) || self.new(condition)
+    end
 
     # 指定年月のタイムカードを取得する
     def monthly(user, year, month)

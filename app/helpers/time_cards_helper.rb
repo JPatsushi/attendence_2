@@ -102,7 +102,6 @@ module TimeCardsHelper
     sum = 0
     user_time_cards.each do |card|
     sum = sum + card.work_hours
-    #また残業の時間も足していく
     end
     sum
   end
@@ -116,10 +115,10 @@ module TimeCardsHelper
   end
   
   #時間外時間
-  def over_work_times(year, month, day, over_time = nil, basic_work_time)
-    if over_time != nil && basic_work_time != nil
+  def over_work_times(year, month, day, over_time = nil, designated_work_end_time)
+    if over_time != nil && designated_work_end_time != nil
       t1 = over_time.in_time_zone("UTC")
-      t2 = basic_work_time.in_time_zone("UTC")
+      t2 = designated_work_end_time.in_time_zone("UTC")
       time_card = Time.zone.local(year, month, day, 23, 59, 59)
       
       if over_time > time_card
