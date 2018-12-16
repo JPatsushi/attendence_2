@@ -6,11 +6,17 @@ class MonthlyAuthenticationsController < ApplicationController
     today = Time.current
     @year = today.year
     @month = today.month
-    
     @user = User.find(params[:id])
-    @monthly_authentication = @user.monthly_authentications.find_by(year: @year, month: @month)
-    @superior = User.find(params[:superior_man])
-    @monthly_authentication.update_attributes(certifier: params[:superior_man], status: "#{@superior.name}に申請中")
+    
+    
+    if params[:superior_man].present?
+      @monthly_authentication = @user.monthly_authentications.find_by(year: @year, month: @month)
+      @superior = User.find(params[:superior_man])
+      @monthly_authentication.update_attributes(certifier: params[:superior_man], status: "#{@superior.name}に申請中")
+    else
+      flash[:danger] = "承認者を指定してください"
+    end
+    
     
     redirect_to time_card_path(@user)
   end

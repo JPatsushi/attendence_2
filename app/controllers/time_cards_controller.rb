@@ -57,26 +57,27 @@ class TimeCardsController < ApplicationController
   #ユーザーが残業申請をする時に実行
   def up_overwork
     @user = User.find_by(id: params[:id])
-    condition = { user: @user, year: params[:year], month: params[:month], day: params[:day] }
-    TimeCard.find_by(condition) ? @time_card = TimeCard.find_by(condition) : @time_card = TimeCard.new(condition)
     
-    if params[:check].to_i != 1
-      time = Time.zone.local(params[:year], params[:month], params[:day], params[:time_hour], params[:time_minute], 0)
+    if params[:superior].present?
+      condition = { user: @user, year: params[:year], month: params[:month], day: params[:day] }
+      TimeCard.find_by(condition) ? @time_card = TimeCard.find_by(condition) : @time_card = TimeCard.new(condition)
+      if params[:check].to_i != 1
+        time = Time.zone.local(params[:year], params[:month], params[:day], params[:time_hour], params[:time_minute], 0)
+      else
+        time = Time.zone.local(params[:year], params[:month], params[:day], params[:time_hour], params[:time_minute], 0).next_day
+      end
+      
+      @time_card.over_work = time
+      @time_card.content = params[:content]
+      @time_card.certifer = params[:superior]
+      @superior = User.find(params[:superior])
+      @time_card.status = user_status_describing(@time_card.status, @superior.name, "残業")
+      @time_card.save
     else
-      time = Time.zone.local(params[:year], params[:month], params[:day], params[:time_hour], params[:time_minute], 0).next_day
+      flash[:danger] = "指示者を指定してください"
     end
-    
-    @time_card.over_work = time
-    @time_card.content = params[:content]
-    @time_card.certifer = params[:superior]
-    @superior = User.find(params[:superior])
-    
-    @time_card.status = user_status_describing(@time_card.status, @superior.name, "残業")
-    
-    @time_card.save
-    
+
     redirect_to time_card_path(@user)
-    
   end
   
   #上長が残業申請を変更する時に実行
@@ -207,6 +208,7 @@ class TimeCardsController < ApplicationController
     s = (number - 1).to_s
 
       condition = { user: @user, year: @year, month: @month, day: number }
+      next unless params[:time_cards][s][:change_certifier].present?
       superior = User.find(params[:time_cards][s][:change_certifier])
       time_card = TimeCard.find_by(condition) ? TimeCard.find_by(condition) : TimeCard.new(condition)
       current_day = number
@@ -317,6 +319,7 @@ class TimeCardsController < ApplicationController
     def superiors(superiors)
       
       array = []
+      # array = array << []
       superiors.each_with_index do |superior, index|
         array[index] = []
         array[index] << superior.name << superior.id 

@@ -38,7 +38,7 @@
                     </td>
                     <td><%= check_box_tag :check %></td>
                     <td class="over_work_modal_content"><%= text_field_tag :content, '内容', class: 'form-control' %></td>
-                    <td class="over_work_modal_superior"><%= select_tag :superior, options_for_select(@superiors_list), class: 'form-control' %></td>
+                    <td class="over_work_modal_superior"><%= select_tag :superior, options_for_select(@superiors_list), include_blank: true, class: 'form-control' %></td>
                   </tr>
                 </tbody>
               </table>

@@ -61,7 +61,7 @@
         <td><%= check_box_tag "time_cards[#{index}][check]" %></td>
         <td></td>
         <td><%= f.text_field :remark, class: 'form-control' %></td>
-        <td class="over_work_modal_superior"><%= select_tag "time_cards[#{index}][change_certifier]", options_for_select(@superiors_list), class: 'form-control' %></td>
+        <td class="over_work_modal_superior"><%= select_tag "time_cards[#{index}][change_certifier]", options_for_select(@superiors_list), include_blank: true, class: 'form-control' %></td>
       </tr> 
       <% end %>
      <% end %>
