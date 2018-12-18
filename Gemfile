@@ -20,6 +20,11 @@ gem 'ransack',      '2.0.0'
 group :development, :test do
   gem 'sqlite3', '1.3.13'
   gem 'byebug',  '9.0.6', platform: :mri
+  gem 'pry'
+  gem 'pry-doc'
+  gem 'pry-byebug'
+  gem 'pry-rails'
+  gem 'pry-stack_explorer'
 end
 
 group :development do
@@ -27,6 +32,8 @@ group :development do
   gem 'listen',                '3.1.5'
   gem 'spring',                '2.0.2'
   gem 'spring-watcher-listen', '2.0.1'
+  gem "better_errors"
+  gem "binding_of_caller"
 end
 
 group :test do

@@ -18,8 +18,10 @@ class TimeCardsController < ApplicationController
     
     @time_cards = monthly_time_cards(@user, @year, @month)
     @time_card = TimeCard.today(@user)
+    
     @first_day = Date.new(@year, @month, 1)
     @last_day = Date.new(@year, @month, 1).next_month.prev_day
+    
     @time_info = TimeInfo.all.last
     @time_cards_count = all_time_cards_for_count(@user)
     @user_time_cards = TimeCard.where(user: @user)
