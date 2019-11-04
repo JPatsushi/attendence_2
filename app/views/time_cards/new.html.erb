@@ -6,15 +6,14 @@
     <%= form_for(@time_info, url: time_cards_path) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
 
-      <%= f.label :must_work_time, "指定勤務時間" %>
-      <%= f.time_field :must_work_time,
-      # value: "%H:%M",
-      # min: '00:00:00',
-      # max: '23:59:59',
-      class: 'form-control' %>
-
       <%= f.label :sd_work_time, "基本勤務時間" %>
       <%= f.time_field :sd_work_time, class: 'form-control' %>
+      
+      <%= f.label :sd_work_time, "指定勤務開始時間" %>
+      <%= f.time_field :sd_work_time, class: 'form-control' %>
+      
+      <%= f.label :must_work_time, "指定勤務終了時間" %>
+      <%= f.time_field :must_work_time, class: 'form-control' %>
 
       <%= f.submit "編集", class: "btn btn-primary" %>
     <% end %>

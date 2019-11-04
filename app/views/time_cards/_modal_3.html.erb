@@ -1,0 +1,77 @@
+<!--勤怠変更申請承認モーダル-->
+<div class="modal fade" id="change_aut" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        </br>
+        <%= form_tag authenticate_2_time_card_path do %>
+            <% (2..User.all.count - 1).each do |id| %> 
+            <!--@change_time_cardsのブロックに変える-->
+              <% array = [] %>
+              <% @change_time_cards.each {|event| array << event if event.user_id == id} %>
+              <% if array != [] %>
+              <h4 style="text-align: center;">【<%= array.first.user.name %>からの勤怠変更申請】</h4>
+              <table class="table table-bordered table-striped"> 
+                <thead style="font-weight: bold;">
+                  <tr style="vertical-align: bottom;">
+                    <th rowspan="3">日付</th>
+                    <th rowspan="3">曜日</th>
+                    <th colspan="4">変更前</th>
+                    <th colspan="4">変更後</th>
+                    <th rowspan="3">備考</th>
+                    <th rowspan="3">指示者確認</th>
+                    <th rowspan="3">変更</th>
+                    <th rowspan="3">勤怠を確認する</th>
+                  </tr>
+                  <tr>
+                    <th colspan="2">出社</th>
+                    <th colspan="2">退社</th>
+                    <th colspan="2">出社</th>
+                    <th colspan="2">退社</th>
+                  </tr>
+                  <tr>
+                    <th>時</th>
+                    <th>分</th>
+                    <th>時</th>
+                    <th>分</th>
+                    <th>時</th>
+                    <th>分</th>
+                    <th>時</th>
+                    <th>分</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% array.each do |obj| %>
+                   <%= fields_for "[#{id}][#{obj.year}][#{obj.month}][#{obj.day}]", obj do |f| %>
+                    <tr>
+                      <td><%= date_in_japanese(obj, :month_day) %></td>
+                      <td><%= into_week(obj.year, obj.month, obj.day) %></td>
+                      <!--<td class="over_work_modal"><%#= time_string(obj.over_work) %></td>-->
+                      <td><%= time_string_hour(obj.in_at) %></td>
+                      <td><%= time_string_min(obj.in_at) %></td>
+                      <td><%= time_string_hour(obj.out_at) %></td>
+                      <td><%= time_string_min(obj.out_at) %></td>
+                      <td><%= time_string_hour(obj.tmp_in_at) %></td>
+                      <td><%= time_string_min(obj.tmp_in_at) %></td>
+                      <td><%= time_string_hour(obj.tmp_out_at) %></td>
+                      <td><%= time_string_min(obj.tmp_out_at) %></td>
+                      <td><%= obj.remark %></td>
+                      <td class="modal_option"><%= f.select :status, options_for_select(["なし","申請中","承認","否認"]), {}, class: 'form-control' %></td>
+                      <td><%= check_box_tag("[#{id}][#{obj.year}][#{obj.month}][#{obj.day}][check]") %></td>
+                      <td><%= link_to button_tag("確認", type: 'button', class: "btn btn-primary"), time_card_path(obj.user, year: obj.year, month: obj.month), :target => "_blank", rel: "noreferrer" %></td>
+                    </tr>
+                   <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+              <% end %>
+            <% end %>
+            <div class= "modal_confirm_button">
+              <%= submit_tag "変更を送信する", class: 'btn btn-primary', style: "width: 237px;" %>
+            </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

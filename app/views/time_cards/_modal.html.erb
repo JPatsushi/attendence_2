@@ -1,0 +1,49 @@
+<!--一ヶ月承認申請モーダル-->
+<div class="modal fade bs-example-modal-lg" id="monthly_aut" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        </br>
+        
+        <%= form_for @monthly_authentication, url: monthly_authentications_path do |pf| %>
+        
+        <% (2..User.all.count - 1).each do |id| %>
+          <% array = [] %>
+          <% @authentication_events.each {|event| array << event if event.user_id == id} %>
+          <% if array != [] %>
+          <h4 style="text-align: center;">【<%= array.first.user.name %>からの一ヶ月分勤怠申請】</h4>
+          <table class="table table-bordered table-striped">
+           <thead>
+             <tr>
+               <th>年</th>
+               <th>月</th>
+               <th>指示者確認</th>
+               <th>変更</th>
+               <th>勤怠を確認する</th>
+             </tr>
+           </thead>
+           <tbody>
+            <% array.each do |obj| %>
+             <%= fields_for "[#{id}][#{obj.year}][#{obj.month}]", obj do |f| %>  
+             <tr>
+               <td><%= obj.year %></td>
+               <td><%= obj.month %></td>
+               <td class="modal_option"><%= f.select :status, options_for_select(["なし","申請中","承認","否認"]), {}, class: 'form-control' %></td>
+               <td><%= check_box_tag("[#{id}][#{obj.year}][#{obj.month}][check]") %></td>
+               <td><%= link_to button_tag("確認", type: 'button', class: "btn btn-primary"), time_card_path(obj.user, year: obj.year, month: obj.month), :target => "_blank", rel: "noreferrer" %></td>
+             </tr>
+             <% end %>
+            <% end %> 
+           </tbody>
+          </table>
+          <% end %>
+        <% end %>
+        <div class= "modal_confirm_button">
+          <%= pf.submit "変更を送信する", class: "btn btn-primary" %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

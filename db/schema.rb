@@ -10,37 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180913101940) do
+ActiveRecord::Schema.define(version: 20181111155240) do
 
-  create_table "items", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
+  create_table "locations", force: :cascade do |t|
+    t.integer "lo_number"
+    t.string "lo_name"
+    t.string "lo_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.datetime "completed_at"
   end
 
-  create_table "microposts", force: :cascade do |t|
-    t.text "content"
+  create_table "monthly_authentications", force: :cascade do |t|
+    t.string "year"
+    t.string "month"
+    t.integer "certifier"
     t.integer "user_id"
+    t.string "content"
+    t.string "status", default: "未"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "picture"
-    t.string "in_reply_to", default: ""
-    t.index ["in_reply_to"], name: "index_microposts_on_in_reply_to"
-    t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
-    t.index ["user_id"], name: "index_microposts_on_user_id"
-  end
-
-  create_table "relationships", force: :cascade do |t|
-    t.integer "follower_id"
-    t.integer "followed_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["followed_id"], name: "index_relationships_on_followed_id"
-    t.index ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true
-    t.index ["follower_id"], name: "index_relationships_on_follower_id"
   end
 
   create_table "time_cards", force: :cascade do |t|
@@ -53,6 +41,13 @@ ActiveRecord::Schema.define(version: 20180913101940) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "remark"
+    t.datetime "over_work"
+    t.string "content"
+    t.integer "certifer"
+    t.string "status"
+    t.integer "change_certifier"
+    t.datetime "tmp_in_at"
+    t.datetime "tmp_out_at"
   end
 
   create_table "time_infos", force: :cascade do |t|
@@ -76,6 +71,12 @@ ActiveRecord::Schema.define(version: 20180913101940) do
     t.string "reset_digest"
     t.datetime "reset_sent_at"
     t.string "depart"
+    t.boolean "superior", default: false
+    t.integer "employee_number"
+    t.string "uid"
+    t.datetime "basic_work_time"
+    t.datetime "designated_work_start_time"
+    t.datetime "designated_work_end_time"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

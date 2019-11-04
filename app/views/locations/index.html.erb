@@ -1,0 +1,125 @@
+<% provide(:title, @title) %>
+<h1><%= @title %></h1>
+
+<div class="panel-group">
+  <div class="panel panel-default">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>拠点番号</th>
+          <th>拠点名</th>
+          <th>拠点種類</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @locations.each_with_index do |location, index| %>
+        <tr>
+          <td>
+            <button data-toggle="collapse" href="#collapse-location_2-<%="#{index + 1}"%>" style="width: 114px;" class="btn btn-primary fix">
+              修正
+            </button>
+          </td>
+          <td><%= link_to location_path(location), method: :delete,
+                                      data: { confirm: "本当によろしいですか?" } do %>
+              <%= button_tag '削除', class: 'btn btn-primary' %>
+              <% end %>
+          </td>
+          <td><%= location.lo_number %></td>
+          <td><%= location.lo_name %></td>
+          <td><%= location.lo_type %></td>
+        </tr>
+        <tr style="text-align: left;">
+          <td colspan="5">
+            <div id="collapse-location_2-<%="#{index + 1}"%>" class="collapse panel-body">
+              <%= form_for(location, url: location_path(location)) do |f| %>
+              <%= render 'shared/error_messages', object: f.object %>
+        
+              <%= f.label :lo_number %>
+              <%= f.number_field :lo_number, class: 'form-control' %>
+        
+              <%= f.label :lo_name %>
+              <%= f.text_field :lo_name, class: 'form-control' %>
+              
+              <%= f.label :lo_type %>
+              <%= f.select :lo_type, options_for_select(["なし","出勤","退勤"]), {}, class: 'form-control' %>
+        
+              <%= f.submit "編集", class: "btn btn-primary" %>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel-group" id="location" >
+  <div class="panel panel-default">
+    <div class="panel-heading" >
+      <h4 class="panel-title">
+        <button data-toggle="collapse" href="#collapse-location" style="width: 114px;" class="btn btn-primary accordion fix">
+                  拠点情報追加
+        </button>
+      </h4>
+    </div>
+    <div id="collapse-location" class="panel-collapse collapse">
+      <div class="panel-body">
+        <%= form_for(@location, url: locations_path(@location)) do |f| %>
+          <%= render 'shared/error_messages', object: f.object %>
+    
+          <%= f.label :lo_number %>
+          <%= f.number_field :lo_number, class: 'form-control' %>
+    
+          <%= f.label :lo_name %>
+          <%= f.text_field :lo_name, class: 'form-control' %>
+          
+          <%= f.label :lo_type %>
+          <%= f.select :lo_type, options_for_select(["なし","出勤","退勤"]), {}, class: 'form-control' %>
+    
+          <%= f.submit "編集", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>  
+
+<!--シフト対策-->
+<script>
+  $(function(){
+    $(".fix").click(function(){
+      $("body").css("overflow-y","scroll");
+    })
+  });
+</script>
+
+
+<style>
+/*  td[colspan="5"] {*/
+/*  width: 100%;*/
+/*}*/
+</style>
+<!--<table class="table">-->
+<!--  <thead>-->
+<!--    <tr>-->
+<!--      <td>title 1</td>-->
+<!--      <td>title 2</td>-->
+<!--      <td>title 3</td>-->
+<!--    </tr></thead>-->
+<!--  <tbody>-->
+<!--    <tr>-->
+<!--      <td data-toggle="collapse" href="#rowID">other columns move when you click me</td>-->
+<!--      <td>im second </td>-->
+<!--      <td>im third</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <td colspan="3">-->
+<!--        <div class="collapse" id="rowID">-->
+<!--          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>           -->
+<!--        </div>-->
+<!--      </td>-->
+<!--    </tr>-->
+<!--  </tbody>-->
+<!--</table>-->

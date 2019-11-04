@@ -1,0 +1,16 @@
+<% if current_user == @user %>
+  <div>
+    <%= link_to edit_time_card_path do %>
+      <button class= "btn btn-primary btn-lg">勤怠を編集</button>
+    <% end %>
+    <%= link_to time_card_path(format: :csv) do %>
+      <button class= "btn btn-primary btn-lg">CSV出力</button>
+    <% end %>
+    </br>
+    <%= link_to edit_time_card_path do %>
+      <button class= "btn btn-primary btn-lg">勤怠修正ログ（承認済）</button>
+    <% end %>
+  </div>
+  </br>
+  </br>
+<% end %>

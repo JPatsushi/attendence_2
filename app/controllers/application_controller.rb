@@ -21,6 +21,14 @@ class ApplicationController < ActionController::Base
       end
     end
     
+    def correct_but_superior_user
+      if current_user.superior 
+      else
+        @user = User.find(params[:id])
+        redirect_to(root_url) unless current_user?(@user)
+      end
+    end
+    
     # def ensure_correct_user
     #   item = Item.find(params[:id])
     #   if current_user.id != item.user_id

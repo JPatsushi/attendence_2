@@ -1,12 +1,53 @@
 <% provide(:title, "Edit data") %>
 <h1>勤怠資料の更新</h1>
-    
-    <%= form_for time_card_path, url: { action: "update" } do |pf| %>
 
+<script>
+// $(function(){
+//   var modal = document.getElementById('myModal');
+//   $("#abc").click(function(){
+//         $("header").css("padding-right", 17);
+//       })
+//   $(".modal-header span").click(function() {
+//         $("header").css("padding-right", 0);
+//   })    
+//   $(window).click(function(event) {
+//         if (event.target == modal) {
+//         // $("header").css("background-color", "blue");
+//         $("header").css("padding-right", 0);
+//     }
+// })
+// })
+</script> 
+
+ <!--Modal -->
+<!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">-->
+<!--  <div class="modal-dialog" role="document">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+<!--        <h4 class="modal-title" id="myModalLabel">Modal title</h4>-->
+<!--      </div>-->
+<!--      <div class="modal-body">-->
+<!--        ...-->
+<!--      </div>-->
+<!--      <div class="modal-footer">-->
+<!--        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+<!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+ <!--Button trigger modal -->
+<!--<button type="button" id="abc" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">-->
+<!--  Launch demo modal-->
+<!--</button>-->
+    
+  <%= form_for time_card_path, url: { action: "update" }, method: "patch" do |pf| %>
   <table class="table table-bordered table-striped edit_timecards_form">
     <thead>
       <tr>
-        <th>日付</th><th>曜日</th><th>出社</th><th>退社</th><th>勤務時間</th><th>備考</th>
+        <th>日付</th><th>曜日</th><th style= "width:180px;">出社</th><th style= "width:180px;">退社</th><th>翌日</th><th>勤務時間</th><th>備考</th><th>指示者確認</th>
       </tr>
     </thead>
     <tbody>
@@ -15,10 +56,12 @@
       <tr>
         <td><%= date_in_japanese(date, :month_day) %></td>
         <td><%= day_of_the_week_in_japanese(date, :short) %></td>
-        <td><%= f.time_field :in_at, class: 'form-control' %></td>
-        <td><%= f.time_field :out_at, class: 'form-control' %></td>
+        <td><%= f.time_select :tmp_in_at, { prompt: {hour: "", minute: ""}, minute_step: 15}, class: 'form-control time_select' %></td>
+        <td><%= f.time_select :tmp_out_at, { prompt: {hour: "", minute: ""}, minute_step: 15}, class: 'form-control time_select' %></td>
+        <td><%= check_box_tag "time_cards[#{index}][check]" %></td>
         <td></td>
         <td><%= f.text_field :remark, class: 'form-control' %></td>
+        <td class="over_work_modal_superior"><%= select_tag "time_cards[#{index}][change_certifier]", options_for_select(@superiors_list), include_blank: true, class: 'form-control' %></td>
       </tr> 
       <% end %>
      <% end %>
@@ -26,8 +69,10 @@
   </table>
     <div class="button-centering">
       <%= link_to time_card_path(@user) do %>
-        <button type="button" class="btn btn-success edit_button">取消</button>
+        <button type="button" class="btn btn-primary edit_button">キャンセル</button>
       <% end %>
-      <%= pf.submit "編集", class: "btn btn-primary edit_button" %>
+      <%= pf.submit "編集を保存する", class: "btn btn-primary edit_button" %>
     </div>
     <% end %>
+
+

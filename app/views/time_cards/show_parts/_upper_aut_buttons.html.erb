@@ -1,0 +1,44 @@
+<% if current_user == @user %>
+  <% if @user.superior %>
+      <div>
+        <% if @authentication_events.count != 0 %>
+          <button id="monthly" style="color:red;" data-toggle="modal" data-target=".bs-example-modal-lg">
+             【所属長承認申請のお知らせ】
+          </button>
+          <span style="color:red; border: 3px solid red;"><%= @authentication_events.count %>件の通知があります</span>
+          <!--一ヶ月承認申請モーダル-->
+          <%= render 'time_cards/modal' %>
+        <% else %>
+          【所属長承認申請のお知らせ】
+        <% end %>
+      </div>
+      <div>
+        <% if @over_time_authentications.count != 0 %>
+          <button style="color:red;" data-toggle="modal" data-target="#overwork_aut">
+            【残業申請のお知らせ】
+          </button>
+          <span style="color:red; border: 3px solid red;"><%= @over_time_authentications.count %>件の通知があります</span>
+          <!--残業申請モーダル-->
+          <%= render 'time_cards/modal_2' %>
+        <% else %>
+          【残業申請のお知らせ】
+        <% end %>
+      </div>
+      <div>
+        <% if @change_time_cards.count != 0 %>
+          <button style="color:red;" data-toggle="modal" data-target="#change_aut">
+            【勤怠変更申請のお知らせ】
+          </button>
+          <span style="color:red; border: 3px solid red;"><%= @change_time_cards.count %>件の通知があります</span>
+          <!--勤怠変更申請モーダル-->
+          <%= render 'time_cards/modal_3' %>
+        <% else %>
+          【勤怠変更申請のお知らせ】
+        <% end %>
+      </div>
+  <% else %> 
+    <div>【所属長承認申請のお知らせ】</div>
+    <div>【勤怠変更申請のお知らせ】</div>
+    <div>【残業申請のお知らせ】</div>
+  <% end %>
+<% end %>

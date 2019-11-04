@@ -29,6 +29,21 @@
 
       <%= f.label :password_confirmation %>
       <%= f.password_field :password_confirmation, class: 'form-control' %>
+      
+      <%= f.label :employee_number %>
+      <%= f.number_field :employee_number, class: 'form-control' %>
+        
+      <%= f.label :uid %>
+      <%= f.text_field :uid, class: 'form-control' %>
+      
+      <%= f.label :basic_work_time %>
+      <%= f.time_field :basic_work_time, class: 'form-control' %>
+        
+      <%= f.label :designated_work_start_time %>
+      <%= f.time_field :designated_work_start_time, class: 'form-control' %>
+        
+      <%= f.label :designated_work_end_time %>
+      <%= f.time_field :designated_work_end_time, class: 'form-control' %>
 
       <%= f.submit "作成", class: "btn btn-primary" %>
     <% end %>

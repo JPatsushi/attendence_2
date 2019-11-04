@@ -64,6 +64,7 @@ h2 {
 p {
   font-size: 1.1em;
   line-height: 2.3em;
+  margin-bottom: 0px;
 }
 
 
@@ -192,9 +193,9 @@ aside {
   }
 }
 
-.users.follow {
-  padding: 0;
-}
+// .users.follow {
+//   padding: 0;
+// }
 
 /* forms */
 
@@ -247,55 +248,8 @@ input {
   margin: 0;
   li {
     overflow: auto;
-    padding: 10px 0;
-    border-bottom: 1px solid $gray-lighter;
-  }
-}
-
-/* microposts */
-
-.microposts {
-  list-style: none;
-  padding: 0;
-  li {
-    padding: 10px 0;
-    border-top: 1px solid #e8e8e8;
-  }
-  .user {
-    margin-top: 5em;
-    padding-top: 0;
-  }
-  .content {
-    display: block;
-    margin-left: 60px;
-    img {
-      display: block;
-      padding: 5px 0;
-    }
-  }
-  .timestamp {
-    color: $gray-light;
-    display: block;
-    margin-left: 60px;
-  }
-  .gravatar {
-    float: left;
-    margin-right: 10px;
-    margin-top: 5px;
-  }
-}
-
-aside {
-  textarea {
-    height: 100px;
-    margin-bottom: 5px;
-  }
-}
-
-span.picture {
-  margin-top: 10px;
-  input {
-    border: 0;
+    padding: 5px 0;
+    // border-bottom: 1px solid $gray-lighter;
   }
 }
 
@@ -345,11 +299,21 @@ thead {
 
 .edit_button {
   width: 20%;
+  height: 40px !important;
+  font-size: 20px;
 }
   
 .button-centering {
   text-align: center;
 }
+
+.time_select {
+  width: 70px;
+  margin-bottom: 0px;
+  display: inline-block;
+  
+}
+
 
 /* for 出社　退社　ボタン */
 
@@ -362,11 +326,10 @@ thead {
 
 .show_button {
     position: absolute;
-    left: 393px;
-    top: 219px;
-    width: 100px;
+    left: 313px;
+    top: 365px;
+    width: 60px;
     height: 0px;
-    
     
   .show_button1 {
     
@@ -378,14 +341,99 @@ thead {
   // line-height: 40px;
   // font-size: 20px;
    position: absolute;
-   left: 230px;
+   left: 150px;
    bottom: -34px;
   }
  
 }
 
 .hidden {
-  display: none
+  display: none;
 }
 
+.over_work {
+  // display: inline;
+}
 
+/* モーダル */
+
+.modal_option {
+  
+  select {
+    margin-bottom: 0px;
+  }
+  
+}
+
+body {
+  // padding-left: 17px !important;
+}
+
+header {
+  // padding-left: 17px ;
+}
+
+.modal-open {
+  
+  // 　padding-right: 0px !important;
+}
+
+// .modal {
+//     padding-right: 0px !important;
+// }
+
+// html {
+//     overflow-y: scroll;
+// }
+
+.modal_confirm_button {
+  text-align: center;
+  input {
+    width: 206px;
+  }
+}
+
+/* 残業申請モーダル */
+.over_work_modal {
+  width: 13%;
+  select {
+    display: inline-block;
+    width: 67px;
+    margin-bottom: 0px;
+  }
+}
+
+.over_work_modal_content {
+  width: 40%;
+  input {
+    margin-bottom: 0px;
+  }
+}
+
+.over_work_modal_superior {
+  width: 10%;
+  select{
+    width: 107px;
+    margin-bottom: 0px;
+  }
+}
+
+/* CSVインポート */
+.csv_form {
+   width: 350px;
+   margin: 10px;
+   float: left;
+
+}
+
+/* アコーディオン */
+.accordion {
+  width: 90px;
+  height: 45px;
+}
+
+/*モーダルシフトトラブル解決*/ 
+.modal-open .navbar-fixed-top {
+  padding-right: 17px;
+
+}

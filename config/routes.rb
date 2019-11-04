@@ -13,13 +13,23 @@ Rails.application.routes.draw do
   
   resources :time_cards do
     member do
-      patch :add, :subtract, :updata
-      post :update
+      patch :add, :subtract, :updata, :up_overwork
+      post :update, :authenticate, :authenticate_2
     end
   end
   
-  resources :users 
+  resources :users do
+    collection do
+      post :import 
+      get :working_member 
+    end
+  end
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
   resources :relationships,       only: [:create, :destroy]
+  
+  resources :monthly_authentications, only: [:update, :create] 
+  resources :locations, only: [:index, :create, :destroy, :update]
+  patch '/monthly_authentications', to: 'monthly_authentications#monthly_update'
+  
 end

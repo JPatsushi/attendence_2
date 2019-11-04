@@ -1,0 +1,50 @@
+<% if current_user == @user %>
+  <% if @time_cards[index] %>
+    <% if @time_cards[index].in_at %>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal_<%= index %>">残業申請</button>
+    <% else %>
+      <button type="button" class="btn btn-primary" disabled>残業申請</button>
+    <% end %>
+  <% else %>
+    <button type="button" class="btn btn-primary" disabled>残業申請</button>
+  <% end %>
+<% end %>
+    <div class="modal fade" id="myModal_<%= index %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </br>
+            <h4 style="text-align: center;">【残業申請】</h4>
+            <%= form_tag up_overwork_time_card_path(year: date.year, month: date.month, day: date.day), method: :patch do %>
+              <table class="table table-bordered table-striped"> 
+                <thead>
+                  <tr style="font-weight: bold;">
+                    <td>日付</td>
+                    <td>曜日</td>
+                    <td style="width: 19%;">終了予定時間</td>
+                    <td>翌日</td>
+                    <td>業務処理内容</td>
+                    <td>指示者確認</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><%= date_in_japanese(date, :month_day) %></td>
+                    <td><%= day_of_the_week_in_japanese(date, :short) %></td>
+                    <td class="over_work_modal"><%= select_tag :time_hour, options_for_select((0..23).map(&:to_s)), class: 'form-control' %>
+                                                <span style="font-weight: bold;">:</span>
+                                                <%= select_tag :time_minute, options_for_select((0..59).map(&:to_s)), class: 'form-control' %>
+                    </td>
+                    <td><%= check_box_tag :check %></td>
+                    <td class="over_work_modal_content"><%= text_field_tag :content, '内容', class: 'form-control' %></td>
+                    <td class="over_work_modal_superior"><%= select_tag :superior, options_for_select(@superiors_list), include_blank: true, class: 'form-control' %></td>
+                  </tr>
+                </tbody>
+              </table>
+              <%= submit_tag("変更を送信する", class: 'btn btn-primary', style: "width: 237px;") %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>

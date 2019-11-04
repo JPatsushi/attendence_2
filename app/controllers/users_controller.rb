@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
-  before_action :correct_user,   only: [:edit, :update]
+  # before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: [:destroy, :index]
-  before_action :correct_but_admin_user, only: [:show]
+  before_action :correct_but_admin_user, only: [:show, :edit, :update]
   
   def index
     if params[:q]
@@ -46,26 +46,70 @@ class UsersController < ApplicationController
   end
   
   def update
-    @user = User.find(params[:id])
-    if @user.update_attributes(user_params)
-      flash[:success] = "プロフィールを更新しました"
-      redirect_to @user
+    if current_user.admin?
+
+      @user = User.find(params[:id])
+       
+      if params[:password]
+        password = params[:password]
+        @user.attributes = {password: password, password_confirmation: password}
+      end
+      
+      if @user.update_attributes(user_params)
+        flash[:success] = "#{@user.name}のプロフィールを更新しました"
+        redirect_to users_path
+      else
+        @q = User.ransack(activated_true: true)
+        @title = "ユーザ一覧"
+        @users = @q.result.page(params[:page])
+        render 'index'
+      end
     else
-      render 'edit'
+      @user = User.find(params[:id])
+      password = params[:password]
+      User.check_password_confirmation(password)
+      if @user.update_attributes(user_params)
+        flash[:success] = "プロフィールを更新しました"
+        redirect_to @user
+      else
+        render 'edit'
+      end
     end
   end
   
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "ユーザーを削除しました"
+    user = User.find(params[:id])
+    name = user.name
+    user.destroy
+    flash[:success] = "#{name}を削除しました"
     redirect_to users_url
+  end
+  
+  #出勤社員一覧
+  def working_member
+    time_cards = TimeCard.where.not(in_at: nil).where(out_at: nil)
+    @members = []
+    time_cards.each {|time_card| @members << time_card.user}
+    #@members = User.joins(:time_cards).where.not(time_cards: {in_at: nil}).where(time_cards: {out_at: nil})
+    # User.where("name like :name", name: "上長%").pluck(:id)
+  end
+  
+  #CSV読み込み
+  def import
+    if params[:file]
+      User.import(params[:file])
+      redirect_to current_user
+    else
+      redirect_to users_path
+    end
   end
   
   private
 
     def user_params
       params.require(:user).permit(:name, :email, :password,
-                                   :password_confirmation, :depart) #adminを追加してもREDにならなかった。
+                                   :password_confirmation, :depart, :employee_number, :uid, :basic_work_time,
+                                   :designated_work_start_time, :designated_work_end_time) #adminを追加してもREDにならなかった。
                                    
     end
     

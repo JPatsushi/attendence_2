@@ -2,7 +2,7 @@ ja:
   activerecord:
     models:
       user: 名前
-      item:
+      location: 拠点
     attributes:
       user:
         id: ID
@@ -11,7 +11,13 @@ ja:
         password: パスワード
         password_confirmation: パスワード確認
         depart: 所属
-      item:
-        title: タイトル
-        description: 内容
+        employee_number: 社員番号
+        uid: カードID
+        basic_work_time: 基本勤務時間
+        designated_work_start_time: 指定勤務開始時間
+        designated_work_end_time: 指定勤務終了時間
+      location:
+        lo_number: 拠点番号
+        lo_name: 拠点名
+        lo_type: 勤怠種類
  
